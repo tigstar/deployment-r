@@ -3,21 +3,13 @@ on:
   push:
     branches:
       - main
-  pull_request:
-    branches:
-      - main
+env:
+  EKS_CLUSTER_NAME: udacity-cluster
+  AWS_REGION: us-east-2
 jobs:
-  run-tests:
+  build:
+    name: Deployment
     runs-on: ubuntu-latest
-    steps:
-    - name: Clone
-      uses: actions/checkout@v4
-
-  deploy:
-    runs-on: ubuntu-latest
-    if: github.ref == 'refs/heads/main'
-    needs:
-      - run-tests
 
     steps:
     - name: Clone the project
@@ -35,13 +27,9 @@ jobs:
         aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
         aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
         aws-region: us-east-2
-
-    - name: verify deployment
-      uses: kodermax/kubectl-aws-eks@main
-      env:
-        KUBE_CONFIG_DATA: ${{ secrets.KUBEONFIG }}
-      run: |
-        kubectl get pods -A  
+        
+    - name: Update kubeconfig
+      run: aws eks update-kubeconfig --name $EKS_CLUSTER_NAME --region $AWS_REGION
 
     - name: Deploy Canary 50%
       run: |
