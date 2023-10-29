@@ -1,4 +1,4 @@
-name: cd
+name: Deploy Canary
 on:
   push:
     branches:
@@ -22,6 +22,9 @@ jobs:
     steps:
     - name: Clone the project
       uses: actions/checkout@v2
+
+    - name: Allow Insecure Commands
+      run: echo 'ACTIONS_ALLOW_UNSECURE_COMMANDS=true' >> $GITHUB_ENV
       
     - name: aws-iam-authenticator installer
       uses: prepor/action-aws-iam-authenticator@1      
