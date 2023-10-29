@@ -11,7 +11,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
     - name: Clone
-      uses: actions/checkout@v2
+      uses: actions/checkout@v4
 
   deploy:
     runs-on: ubuntu-latest
@@ -21,13 +21,20 @@ jobs:
 
     steps:
     - name: Clone the project
-      uses: actions/checkout@v2
+      uses: actions/checkout@v4
 
     - name: Allow Insecure Commands
       run: echo 'ACTIONS_ALLOW_UNSECURE_COMMANDS=true' >> $GITHUB_ENV
       
-    - name: aws-iam-authenticator installer
+    - name: Install aws-iam-authenticator
       uses: prepor/action-aws-iam-authenticator@1
+
+    - name: Configure AWS Credentials
+      uses: aws-actions/configure-aws-credentials@v4
+      with:
+        aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+        aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+        aws-region: us-east-2
 
     - name : Install Kubectl
       uses: tale/kubectl-action@v1
