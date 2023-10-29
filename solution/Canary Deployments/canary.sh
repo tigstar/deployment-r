@@ -24,15 +24,15 @@ function canary_deploy {
 }
 
 # Create the html page config
-kubectl apply -f index_v2_html.yml
+kubectl apply -f starter/apps/canary/index_v2_html.yml
 # Create canary-v2 deployment
-kubectl apply -f canary-v2.yml
+kubectl apply -f starter/apps/canary/canary-v2.yml
 # Create canary svc
-kubectl apply -f canary-svc.yml
+kubectl apply -f starter/apps/canary/canary-svc.yml
 
 sleep 1
 # Begin canary deployment and stop when it reaches 50%
-while [ $(kubectl get pods -n udacity | grep -c canary-v1) -gt 2 ]
+while [ $(kubectl get pods -n udacity | grep -c canary-v1) -ne 2 $(kubectl get pods -n udacity | grep -c canary-v2)]
 do
   canary_deploy
 done
