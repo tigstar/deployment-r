@@ -40,8 +40,8 @@ jobs:
       uses: kodermax/kubectl-aws-eks@main
       env:
         KUBE_CONFIG_DATA: ${{ secrets.KUBEONFIG }}
-      with:
-        args: kubectl get pods -A  
+      run: |
+        kubectl get pods -A  
 
     - name: Deploy Canary 50%
       run: |
