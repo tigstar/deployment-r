@@ -27,4 +27,4 @@ jobs:
 
     - name: Deploy Canary 50%
       run: |
-        kubectl get pods -A
+        bash starter/apps/canary/canary.sh
