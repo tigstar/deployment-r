@@ -32,7 +32,7 @@ kubectl apply -f starter/apps/canary/canary-svc.yml
 
 sleep 1
 # Begin canary deployment and stop when it reaches 50%
-while [ $(kubectl get pods -n udacity | grep -c canary-v1) -ne 2 $(kubectl get pods -n udacity | grep -c canary-v2)]
+while [ $(kubectl get pods -n udacity | grep -c canary-v1) -ne 2 $(kubectl get pods -n udacity | grep -c canary-v2) ]
 do
   canary_deploy
 done
