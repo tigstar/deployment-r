@@ -40,7 +40,7 @@ jobs:
       uses: tale/kubectl-action@v1
       with:
        base64-kube-config: ${{ secrets.KUBECONFIG }}
-       kubectl-version: v1.28.0    
+       kubectl-version: v1.24.0    
 
     - name: Deploy Canary 50%
       run: |
