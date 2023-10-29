@@ -30,17 +30,18 @@ jobs:
       uses: prepor/action-aws-iam-authenticator@1
 
     - name: Configure AWS Credentials
-      uses: aws-actions/configure-aws-credentials@v2
+      uses: aws-actions/configure-aws-credentials@V2
       with:
         aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
         aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
         aws-region: us-east-2
 
-    - name : Install Kubectl
-      uses: tale/kubectl-action@v1
+    - name: verify deployment
+      uses: kodermax/kubectl-aws-eks@main
+      env:
+        KUBE_CONFIG_DATA: ${{ secrets.KUBEONFIG }}
       with:
-       base64-kube-config: ${{ secrets.KUBECONFIG }}
-       kubectl-version: v1.24.0    
+        args: kubectl get pods -A  
 
     - name: Deploy Canary 50%
       run: |
